@@ -23,9 +23,10 @@ namespace BaggageSorting
 
             for (int i = 0; i < 10; i++)
             {
-                new CheckInDesk("Checkin desk #" + (i+1));
+                ThreadPool.QueueUserWorkItem(new WaitCallback(new CheckInDesk("Checkin desk #" + (i + 1)).OpenDesk));
+                //new CheckInDesk("Checkin desk #" + (i+1));
             }
-
+            Console.ReadLine();
         }
 
 

@@ -14,10 +14,18 @@ namespace BaggageSorting
         public CheckInDesk(string name)
         {
             Name = name;
-            new Thread(GenerateBaggage).Start();
+            //new Thread(GenerateBaggage).Start();
         }
 
-        public void LoadBaggage(Baggage bag)
+        public void OpenDesk(object obj)
+        {
+            while (true)
+            {
+                GenerateBaggage();
+            }
+        }
+
+        private void LoadBaggage(Baggage bag)
         {
             for (int i = 0; i < Program.Destinations.Length; i++)
             {
@@ -30,16 +38,15 @@ namespace BaggageSorting
             }
         }
 
-        private void GenerateBaggage(object obj)
+        private void GenerateBaggage()
         {
-            while (true)
-            {
-                string[] arr = Program.Destinations;
+            
+            string[] arr = Program.Destinations;
 
-                string destination = arr[ new Random().Next(0, arr.Length) ];
-                Baggage bag = new Baggage(new Random().Next(10000), destination);
-                this.LoadBaggage(bag);
-            }
+            string destination = arr[ new Random().Next(0, arr.Length) ];
+            Baggage bag = new Baggage(new Random().Next(10000), destination);
+            this.LoadBaggage(bag);
+            
         }
 
 
