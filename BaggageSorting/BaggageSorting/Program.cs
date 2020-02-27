@@ -14,18 +14,17 @@ namespace BaggageSorting
 
         static void Main(string[] args)
         {
-            CheckInDesk Desk1 = new CheckInDesk("Checkin desk #1");
-            CheckInDesk Desk2 = new CheckInDesk("Checkin desk #2");
-            CheckInDesk Desk3 = new CheckInDesk("Checkin desk #3");
-            CheckInDesk Desk4 = new CheckInDesk("Checkin desk #4");
-
             for (int i = 0; i < Destinations.Length; i++)
             {
-                new Terminal("Terminal #" + ( i + 1 ), Destinations[i]);
+                sortingSystem.AddTerminal(
+                        new Terminal("Terminal #" + (i + 1), Destinations[i])
+                    );
             }
 
-            
-
+            for (int i = 0; i < 10; i++)
+            {
+                new CheckInDesk("Checkin desk #" + (i+1));
+            }
 
         }
 

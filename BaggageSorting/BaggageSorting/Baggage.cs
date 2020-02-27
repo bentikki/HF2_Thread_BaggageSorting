@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BaggageSorting
@@ -10,13 +11,18 @@ namespace BaggageSorting
     {
         public int Id { get; private set; }
         public string Destination { get; private set; }
+        public List<string> Log { get; private set; } = new List<string>();
 
-        public Baggage(string destination)
+        public Baggage(int id, string destination)
         {
-            Id = new Random().Next(0, 10000);
+            Id = id;
             Destination = destination;
         }
 
+        public void AddToLog(string logMessage)
+        {
+            Log.Add($"[{Thread.CurrentThread.ManagedThreadId}]: {DateTime.Now}: {logMessage}" );
+        }
 
     }
 }

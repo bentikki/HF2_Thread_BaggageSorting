@@ -14,8 +14,7 @@ namespace BaggageSorting
         public CheckInDesk(string name)
         {
             Name = name;
-
-            GenerateBaggage();
+            new Thread(GenerateBaggage).Start();
         }
 
         public void LoadBaggage(Baggage bag)
@@ -24,19 +23,21 @@ namespace BaggageSorting
             {
                 if(bag.Destination == Program.Destinations[i])
                 {
-                    Console.WriteLine("Added baggage: " + bag.Id + " to Destination " + bag.Destination);
+                    Printer.PrintMessage("Added baggage: " + bag.Id + " to Destination " + bag.Destination);
+                    bag.AddToLog("Added baggage: " + bag.Id + " to Destination " + bag.Destination);
+                    Program.sortingSystem.AddBaggage(bag);
                 }
             }
         }
 
-        private void GenerateBaggage()
+        private void GenerateBaggage(object obj)
         {
             while (true)
             {
                 string[] arr = Program.Destinations;
 
                 string destination = arr[ new Random().Next(0, arr.Length) ];
-                Baggage bag = new Baggage(destination);
+                Baggage bag = new Baggage(new Random().Next(10000), destination);
                 this.LoadBaggage(bag);
             }
         }
