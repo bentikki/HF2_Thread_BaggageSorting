@@ -15,8 +15,9 @@ namespace BaggageSorting
 
         public void AddBaggage(object obj)
         {
-            if (obj is Baggage bag)
+            if (obj is Baggage)
             {
+                Baggage bag = (Baggage)obj;
                 lock (_lock)
                 {
                     baggageQueueIn.Enqueue(bag);
