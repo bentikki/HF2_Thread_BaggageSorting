@@ -47,8 +47,8 @@ namespace BaggageSorting
                     bag = BaggageList.Dequeue();
                     Monitor.Pulse(BaggageList);
                 }
-                Printer.PrintMessage($"..........Added baggage with ID:{bag.Id} Destination:{bag.Destination} to {this.Name}:{this.Destination} Baggage Queue(OUT) -  Current size[{this.BaggageList.Count}]");
-                bag.AddToLog($"..........Added baggage with ID:{bag.Id} Destination:{bag.Destination} to {this.Name}:{this.Destination} Baggage Queue(OUT) -  Current size[{this.BaggageList.Count}]");
+                Printer.PrintMessage($"..........Terminal[{this.TerminalID}]:Added baggage with ID:{bag.Id} Destination:{bag.Destination} to {this.Name}:{this.Destination} Baggage Queue(OUT) -  Current size[{this.BaggageList.Count}]");
+                bag.AddToLog($"..........Terminal[{this.TerminalID}]:Added baggage with ID:{bag.Id} Destination:{bag.Destination} to {this.Name}:{this.Destination} Baggage Queue(OUT) -  Current size[{this.BaggageList.Count}]");
 
                 foreach (string message in bag.Log)
                 {
@@ -56,10 +56,9 @@ namespace BaggageSorting
                 }
                 Thread.Sleep(StaticRandom.Rand(100, 500));
             }
-                 
+
 
         }
-
 
         public void AddBaggageToTerminal(object obj)
         {

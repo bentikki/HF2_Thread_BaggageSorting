@@ -52,8 +52,8 @@ namespace BaggageSorting
                     }
 
                     Baggage bag = checkInQueue.Dequeue();
-                    Printer.PrintMessage("Added baggage: " + bag.Id + " to Destination " + bag.Destination);
-                    bag.AddToLog("Added baggage: " + bag.Id + " to Destination " + bag.Destination);
+                    Printer.PrintMessage($"Checkin[{DeskID}]: Added baggage: " + bag.Id + " to Destination " + bag.Destination);
+                    bag.AddToLog($"Checkin[{DeskID}]: Added baggage: " + bag.Id + " to Destination " + bag.Destination);
 
                     lock (SortingSystem.baggageQueueIn)
                     {

@@ -78,7 +78,6 @@ namespace BaggageSorting
                     {
                         lock (destinationTermintal.BaggageList)
                         {
-                            //new Thread(destinationTermintal.AddBaggageToTerminal).Start(bag);
                             destinationTermintal.BaggageList.Enqueue(bag);
                             Monitor.Pulse(destinationTermintal.BaggageList);
                         }
@@ -86,6 +85,7 @@ namespace BaggageSorting
                     else
                     {
                         //No gate with destination is found.
+                        Printer.LogMessage($"!!!!!!!!!!!Warning[ Baggage lost with ID[{bag.Id}] and Destination[{bag.Destination}] ]Warning!!!!!!!!!!!");
                     }
                 }
 
@@ -102,8 +102,9 @@ namespace BaggageSorting
             {
                 Terminals.Add(terminal);
             }
-            Printer.PrintMessage($"Terminal #{terminal.Name} with destination {terminal.Destination} is added.");
-
+            string message = $"Terminal {terminal.Name} with destination {terminal.Destination} is added.";
+            Printer.PrintMessage(message);
+            Printer.LogMessage(message);
         }
 
         //Method to add Check In Desks
