@@ -11,12 +11,14 @@ namespace BaggageSorting
     {
         public static void PrintMessage(string s)
         {
-            //Console.WriteLine( $"Thread[{Thread.CurrentThread.ManagedThreadId}]: " + s);
+            string output = Thread.CurrentThread.ManagedThreadId.ToString("#00");
+            //Console.WriteLine( $"Thread[{output}]: " + s);
         }
 
         public static void LogMessage(string s)
         {
-            Console.WriteLine($"Thread[{Thread.CurrentThread.ManagedThreadId}]: " + s);
+            string output = Thread.CurrentThread.ManagedThreadId.ToString("#00");
+            Console.WriteLine($"Thread[{output}]: " + s);
         }
     }
 }

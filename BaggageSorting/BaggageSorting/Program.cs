@@ -9,24 +9,20 @@ namespace BaggageSorting
 {
     class Program
     {
-        public static string[] Destinations = { "USA", "Russia", "Spain", "Portugal", "France", "Germany" };
-        public static SortingSystem sortingSystem = new SortingSystem();
-
         static void Main(string[] args)
         {
-            for (int i = 0; i < Destinations.Length; i++)
-            {
-                sortingSystem.AddTerminal(
-                        new Terminal("Terminal #" + (i + 1), Destinations[i])
-                    );
-            }
+            string[] Destinations = { "USA", "Russia", "Spain", "Portugal", "France", "Germany" };
+            SortingSystem sortingSystem = new SortingSystem(5, 4, Destinations);
 
-            for (int i = 0; i < 10; i++)
+            while (true)
             {
-                ThreadPool.QueueUserWorkItem(new WaitCallback(new CheckInDesk("Checkin desk #" + (i + 1)).OpenDesk));
-                //new CheckInDesk("Checkin desk #" + (i+1));
+                ConsoleKeyInfo UserInput = Console.ReadKey();
+
+                if (char.IsDigit(UserInput.KeyChar))
+                {
+                    sortingSystem.ShutdownTerminal(int.Parse(UserInput.KeyChar.ToString()));
+                }
             }
-            Console.ReadLine();
         }
 
 
