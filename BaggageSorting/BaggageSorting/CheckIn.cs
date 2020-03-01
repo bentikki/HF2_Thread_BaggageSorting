@@ -87,15 +87,17 @@ namespace BaggageSorting
                         Printer.LogMessage(message);
                         Monitor.Wait(checkInQueue);
                     }
-                    if(SortingSystem.Terminals.Count > 0)
+                    lock (SortingSystem.Terminals)
                     {
-                        int index = StaticRandom.Rand(SortingSystem.Terminals.Count - 1);
-                        string destination = SortingSystem.Terminals[index].Destination;
-                        Baggage bag = new Baggage(StaticRandom.Rand(1000), destination);
-                        checkInQueue.Enqueue(bag);
-                        Monitor.Pulse(checkInQueue);
+                        if (SortingSystem.Terminals.Count > 0)
+                        {
+                            int index = StaticRandom.Rand(SortingSystem.Terminals.Count - 1);
+                            string destination = SortingSystem.Terminals[index].Destination;
+                            Baggage bag = new Baggage(StaticRandom.Rand(1000), destination);
+                            checkInQueue.Enqueue(bag);
+                            Monitor.Pulse(checkInQueue);
+                        }
                     }
-                    
                 }
                 Thread.Sleep(StaticRandom.Rand(200,1000));
             }

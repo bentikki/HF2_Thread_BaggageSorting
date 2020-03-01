@@ -10,17 +10,19 @@ namespace BaggageSorting
     class SortingSystem
     {
         static object _lock = new object();
+        private FlightPlan flightPlan;
         public static int InQueueCapacity { get; private set; } = 50;
         public static Queue<Baggage> baggageQueueIn = new Queue<Baggage>();
         public static List<Terminal> Terminals = new List<Terminal>();
         public static List<CheckInDesk> checkInDesks = new List<CheckInDesk>();
 
-        public SortingSystem(int numberOfCheckins, int numberOfTerminals, string[] destinations)
+        public SortingSystem(int numberOfCheckins, FlightPlan flightPlan)
         {
+            this.flightPlan = flightPlan;
             //Add Terminals
-            for (int i = 0; i < numberOfTerminals; i++)
+            for (int i = 0; i < this.flightPlan.Destinations.Length; i++)
             {
-                AddTerminal("Terminal #" + (i + 1), destinations[i], i + 1);
+                AddTerminal("Terminal #" + (i + 1), this.flightPlan.Destinations[i], i + 1);
             }
             //Add CheckinDesks
             for (int i = 0; i < numberOfCheckins; i++)
@@ -33,19 +35,17 @@ namespace BaggageSorting
 
         private void StartSorting()
         {
-            for (int i = 0; i < Terminals.Count; i++)
-            {
-                Terminals[i].OpenTerminal();
-            }
             for (int i = 0; i < checkInDesks.Count; i++)
             {
                 checkInDesks[i].OpenDesk();
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(SortBaggage));
             }
+
+            new Thread(CheckFlightplan).Start();
         }
 
         //Main Baggagesort function. Used to sort the Baggage Queue IN.
@@ -89,22 +89,63 @@ namespace BaggageSorting
                     }
                 }
 
-                Thread.Sleep(StaticRandom.Rand(200, 1500));
+                Thread.Sleep(StaticRandom.Rand(200, 1000));
             }
 
         }
 
+        //Method to check flightplan
+        private void CheckFlightplan()
+        {
+            while (flightPlan.Plan.Count > 0)
+            {
+
+                List<DateTime> removeKeys = new List<DateTime>();
+                Dictionary<int, string> newTerminals = new Dictionary<int, string>();
+
+                foreach (KeyValuePair<DateTime, object[]> entry in flightPlan.Plan)
+                {
+                    if (DateTime.Now > entry.Key)
+                    {
+                        int terminalID = Convert.ToInt16(entry.Value[0]);
+                        string terminalDestination = (string)entry.Value[1];
+
+                        newTerminals.Add(terminalID, terminalDestination);
+                        removeKeys.Add(entry.Key);
+                    }
+                }
+                foreach (DateTime key in removeKeys)
+                {
+                    flightPlan.Plan.Remove(key);
+                }
+                foreach (KeyValuePair<int, string> entry in newTerminals)
+                {
+                    ShutdownTerminal(entry.Key);
+                    AddTerminal(entry.Key, entry.Value);
+                }
+
+                Thread.Sleep(1000);
+                
+            }
+        }
+
         //Method to add Terminals
-        private void AddTerminal(string name, string destination, int id)
+        private Terminal AddTerminal(string name, string destination, int id)
         {
             Terminal terminal = new Terminal(name, destination, id);
             lock (Terminals)
             {
                 Terminals.Add(terminal);
             }
+            terminal.OpenTerminal();
             string message = $"Terminal {terminal.Name} with destination {terminal.Destination} is added.";
             Printer.PrintMessage(message);
             Printer.LogMessage(message);
+            return terminal;
+        }
+        private Terminal AddTerminal(int id, string destination)
+        {
+            return AddTerminal("Terminal #" + (id + 1), destination, id + 1);
         }
 
         //Method to add Check In Desks
@@ -115,7 +156,6 @@ namespace BaggageSorting
             {
                 checkInDesks.Add(checkInDesk);
             }
-
             string message = $"Checkin Desk {checkInDesk.Name} with ID[{checkInDesk.DeskID}] is added.";
             Printer.PrintMessage(message);
             Printer.LogMessage(message);
@@ -127,7 +167,10 @@ namespace BaggageSorting
             if (removeDesk != null)
             {
                 Printer.LogMessage($"!!!!!!!!!!!!Shutting down Checkin Desk with ID[{removeDesk.DeskID}]!!!!!!!!!!!!");
-                checkInDesks.Remove(removeDesk);
+                lock (checkInDesks)
+                {
+                    checkInDesks.Remove(removeDesk);
+                }
                 removeDesk.Shutdown();
             }
             else
@@ -142,8 +185,11 @@ namespace BaggageSorting
             Terminal removeTerminal = Terminals.Find(i => i.TerminalID == shutDownID);
             if (removeTerminal != null)
             {
-                Printer.LogMessage($"!!!!!!!!!!!!Shutting down Terminal with ID[{removeTerminal.TerminalID}]!!!!!!!!!!!!");
-                Terminals.Remove(removeTerminal);
+                Printer.LogMessage($"!!!!!!!!!!!!Shutting down Terminal with ID[{removeTerminal.TerminalID}] and destination {removeTerminal.Destination}!!!!!!!!!!!!");
+                lock (Terminals)
+                {
+                    Terminals.Remove(removeTerminal);
+                }
                 removeTerminal.Shutdown();
             }
             else

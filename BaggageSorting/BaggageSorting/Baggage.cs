@@ -21,7 +21,7 @@ namespace BaggageSorting
 
         public void AddToLog(string logMessage)
         {
-            Log.Add($"OriginalThread[{Thread.CurrentThread.ManagedThreadId.ToString("#00")}]: {DateTime.Now.ToString("HH:mm:ss")}: {logMessage}" );
+            Log.Add($"OriginalThread[{Thread.CurrentThread.ManagedThreadId.ToString("#00")}]: {DateTime.Now.ToString("HH:mm:ss.fff")}: {logMessage}" );
         }
 
     }

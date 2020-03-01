@@ -9,6 +9,8 @@ namespace BaggageSorting
 {
     static class Printer
     {
+        static public object _logLock = new object();
+
         public static void PrintMessage(string s)
         {
             string output = Thread.CurrentThread.ManagedThreadId.ToString("#00");

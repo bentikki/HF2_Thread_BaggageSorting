@@ -37,7 +37,7 @@ namespace BaggageSorting
 
         public void LoadBaggage()
         {
-            Printer.LogMessage($"{Name} LoadBaggage Thread Started.");
+            Printer.LogMessage($"{Name} LoadBaggage Thread Started with destination {Destination}.");
             while (true)
             {
                 Baggage bag;
@@ -50,9 +50,12 @@ namespace BaggageSorting
                 Printer.PrintMessage($"..........Terminal[{this.TerminalID}]:Added baggage with ID:{bag.Id} Destination:{bag.Destination} to {this.Name}:{this.Destination} Baggage Queue(OUT) -  Current size[{this.BaggageList.Count}]");
                 bag.AddToLog($"..........Terminal[{this.TerminalID}]:Added baggage with ID:{bag.Id} Destination:{bag.Destination} to {this.Name}:{this.Destination} Baggage Queue(OUT) -  Current size[{this.BaggageList.Count}]");
 
-                foreach (string message in bag.Log)
+                lock (Printer._logLock) 
                 {
-                    Printer.LogMessage(message);
+                    foreach (string message in bag.Log)
+                    {
+                        Printer.LogMessage(message);
+                    }
                 }
                 Thread.Sleep(StaticRandom.Rand(100, 500));
             }

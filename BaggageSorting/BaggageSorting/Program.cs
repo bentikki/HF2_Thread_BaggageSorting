@@ -11,18 +11,21 @@ namespace BaggageSorting
     {
         static void Main(string[] args)
         {
+            int numberOfTerminals = 4;
             string[] Destinations = { "USA", "Russia", "Spain", "Portugal", "France", "Germany" };
-            SortingSystem sortingSystem = new SortingSystem(5, 4, Destinations);
 
-            while (true)
-            {
-                ConsoleKeyInfo UserInput = Console.ReadKey();
+            FlightPlan plan = new FlightPlan(@"..\..\FlightPlan\FlightPlan.txt", Destinations, numberOfTerminals);
+            SortingSystem sortingSystem = new SortingSystem(5, plan);
 
-                if (char.IsDigit(UserInput.KeyChar))
-                {
-                    sortingSystem.ShutdownTerminal(int.Parse(UserInput.KeyChar.ToString()));
-                }
-            }
+            //while (true)
+            //{
+            //    ConsoleKeyInfo UserInput = Console.ReadKey();
+
+            //    if (char.IsDigit(UserInput.KeyChar))
+            //    {
+            //        sortingSystem.ShutdownTerminal(int.Parse(UserInput.KeyChar.ToString()));
+            //    }
+            //}
         }
 
 
