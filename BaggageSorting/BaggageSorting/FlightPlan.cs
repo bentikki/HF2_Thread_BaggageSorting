@@ -65,7 +65,7 @@ namespace BaggageSorting
 
 
 
-        //Methods to generate and create Flightplan File.
+        //Methods to generate and create Flightplan File. Used for testing/simulating.
         private void GenerateFlightPlan()
         {
             Dictionary<DateTime, string> generatePlan = new Dictionary<DateTime, string>();
@@ -87,6 +87,8 @@ namespace BaggageSorting
             
             CreateFile(generatePlan);
         }
+
+        //Method to create the flight plan file. Used for testing/simulating.
         private void CreateFile(Dictionary<DateTime, string> generatePlan)
         {
             string fileName = filePathToPlan;
