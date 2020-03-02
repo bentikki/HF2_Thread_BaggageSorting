@@ -14,18 +14,12 @@ namespace BaggageSorting
             int numberOfTerminals = 4;
             string[] Destinations = { "USA", "Russia", "Spain", "Portugal", "France", "Germany" };
 
+            //New FlightPlan takes a path to FlghtPlan.txt, destinations and number of terminals.
             FlightPlan plan = new FlightPlan(@"..\..\FlightPlan\FlightPlan.txt", Destinations, numberOfTerminals);
+
+            //SortingSystem takes the number of checkins, and a FlightPlan object.
             SortingSystem sortingSystem = new SortingSystem(5, plan);
 
-            //while (true)
-            //{
-            //    ConsoleKeyInfo UserInput = Console.ReadKey();
-
-            //    if (char.IsDigit(UserInput.KeyChar))
-            //    {
-            //        sortingSystem.ShutdownTerminal(int.Parse(UserInput.KeyChar.ToString()));
-            //    }
-            //}
         }
 
 

@@ -33,6 +33,7 @@ namespace BaggageSorting
             StartSorting();
         }
 
+        //Method to start the sorting "Conveyor belt"
         private void StartSorting()
         {
             for (int i = 0; i < checkInDesks.Count; i++)

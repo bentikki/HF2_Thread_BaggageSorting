@@ -21,6 +21,7 @@ namespace BaggageSorting
             DeskID = id;
         }
 
+        //Method to open desk. Starts the threads for generating baggage, and loading to baggage queue IN.
         public void OpenDesk()
         {
             generaterThread = new Thread(GenerateBaggage);
@@ -30,12 +31,14 @@ namespace BaggageSorting
             loaderThread.Start();
         }
 
+        //Method to shutdown to Checkin desk. Shutdowns the generater and loader threads. 
         public void Shutdown()
         {
             generaterThread.Abort();
             loaderThread.Abort();
         }
 
+        //Takes baggage from checkInQueue and puts on baggageQueue IN, the main baggage conveyor belt.
         private void LoadBaggage()
         {
             Printer.LogMessage($"{Name} LoadBaggage Thread Started.");
@@ -73,6 +76,8 @@ namespace BaggageSorting
 
         }
 
+        //Method to generate baggage, is only used for testing to allways generate new baggage.
+        //Adds to checkInQueue.
         private void GenerateBaggage()
         {
             Printer.LogMessage($"{Name} GenerateBaggage Thread Started.");
