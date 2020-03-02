@@ -82,7 +82,7 @@ namespace BaggageSorting
                     );
                 }
                 startTime += 10;
-                endTime += 10;
+                endTime += 11;
             }
             
             CreateFile(generatePlan);
