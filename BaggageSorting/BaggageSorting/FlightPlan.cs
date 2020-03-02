@@ -72,7 +72,7 @@ namespace BaggageSorting
 
             int startTime = 5;
             int endTime = 15;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 30; i++)
             {
                 for (int j = 1; j <= NumberOfTerminals; j++)
                 {
@@ -85,28 +85,6 @@ namespace BaggageSorting
                 endTime += 10;
             }
             
-
-            //Dictionary<DateTime, string> generatePlan =
-            //    new Dictionary<DateTime, string>
-            //    {
-            //        {
-            //            DateTime.Now.AddSeconds(StaticRandom.Rand(5,20)).AddMilliseconds(StaticRandom.Rand(1,999)),
-            //            "1, UK"
-            //        },
-            //        {
-            //            DateTime.Now.AddSeconds(StaticRandom.Rand(5,20)).AddMilliseconds(StaticRandom.Rand(1,999)),
-            //            "2, Australia"
-            //        },
-            //        {
-            //            DateTime.Now.AddSeconds(StaticRandom.Rand(5,20)).AddMilliseconds(StaticRandom.Rand(1,999)),
-            //            "3, Brazil"
-            //        },
-            //        {
-            //            DateTime.Now.AddSeconds(StaticRandom.Rand(5,20)).AddMilliseconds(StaticRandom.Rand(1,999)),
-            //            "4, Portugal"
-            //        },
-            //    };
-
             CreateFile(generatePlan);
         }
         private void CreateFile(Dictionary<DateTime, string> generatePlan)

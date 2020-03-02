@@ -59,8 +59,6 @@ namespace BaggageSorting
                 }
                 Thread.Sleep(StaticRandom.Rand(100, 500));
             }
-
-
         }
 
         public void AddBaggageToTerminal(object obj)
